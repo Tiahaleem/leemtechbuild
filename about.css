@@ -1,0 +1,71 @@
+/* RESET */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    /* font-family: Arial, Helvetica, sans-serif; */
+    text-decoration: none;
+    list-style: none;
+}
+.section_about_section{
+background-color: rgb(27, 34, 50);
+font-family: "DM Sans", sans-serif;
+padding: 36px 0px;
+border: 0px solid rgb(221, 223, 228);
+}
+.section_container{
+padding: 0px 18px;
+font-family: "DM Sans", sans-serif;
+line-height: 1.6;
+ max-width: 1200px;
+/* margin: 0 auto; */
+}
+.section_container h1{
+  border: 0px solid rgb(221, 223, 228);  
+  color: rgb(251, 250, 249);
+  font-size: "Space Grotesk", sans-serif;
+  font-size: 20.25px;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-bottom: 6.75px;
+}
+.section_container p{
+    color: rgba(251, 250, 249, 0.8);
+    font-family: "DM Sans", sans-serif;
+    font-size: 10.125px;
+    line-height: 1.55;
+    max-width: 378px;
+}
+.next_section_about{
+    border: 0px solid rgb(221, 223, 228);
+    color: rgb(19, 23, 32);
+    font-family: "DM Sans", sans-serif;
+    padding: 36px 0px;
+    line-height: 13.5px;
+    background-color: rgb(250, 249, 247);
+}
+.grid_next_section_about{
+
+}
+.who_are_we_div h2{
+color: rgb(19, 23, 32);
+font-family: "Space Grotesk", sans-serif;
+font-size: 13.5px;
+font-weight: 700;
+line-height: 18px;
+margin: 0px 0px 9px;
+}
+.who_are_we_div p{
+    color: rgb(103, 111, 126);
+    font-family: "DM Sans", sans-serif;
+    line-height: 14.625px;
+margin: 0px 0px 9px; 
+}
+.why_choose_us_div h2{
+color: rgb(19, 23, 32);
+font-family: "Space Grotesk", sans-serif;
+font-size: 13.5px;
+font-weight: 700;
+line-height: 18px;
+margin: 0px 0px 9px;
+}
