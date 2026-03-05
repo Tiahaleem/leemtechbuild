@@ -57,7 +57,7 @@ const PRODUCTS = {
                 sizes: {
             "350mm by 300mm": 24500
         },
-        featured: true,
+        featured: false,
     },
         RST_350mm_by_300mmstep:{
         name: "RST 350 by 300",
@@ -68,7 +68,7 @@ const PRODUCTS = {
                 sizes: {
             "350mm by 300mm": 2500
         },
-        featured: true,
+        featured: false,
     },
             RST_350mm_by_300mms:{
         name: "RST 350 by 300",
@@ -79,7 +79,7 @@ const PRODUCTS = {
                 sizes: {
             "350mm by 300mm": 23500
         },
-        featured: true,
+        featured: false,
     },
                 RST_350mm_by_300mmms:{
         name: "RST 350 by 300",
@@ -90,7 +90,7 @@ const PRODUCTS = {
                 sizes: {
             "350mm by 300mm": 235500
         },
-        featured: true,
+        featured: false,
     },
 };
 const productsArray = Object.values(PRODUCTS);
