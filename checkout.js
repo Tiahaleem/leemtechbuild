@@ -1,3 +1,6 @@
+const GOOGLE_SHEETS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwRzmsJEIhEbDmAHpt2O_-onpZkbOv_nl8nN4USDCz0dWJu5dc9hsWnZKAZsBou_6Vc/exec";
+const GOOGLE_SECRET = "LEEMTECH_2026";
+
 // ==============================
 // SETTINGS
 // ==============================
@@ -79,7 +82,7 @@ function renderSummary() {
         <div class="summary-item">
           <div class="left">
             <b>${item.name}</b>
-            <small>${item.size} • ₦${item.price.toLocaleString()} each • Qty ${item.quantity}</small>
+            <small>${item.size} • ₦${Number(item.price).toLocaleString()} each • Qty ${item.quantity}</small>
           </div>
           <div class="right">${money(total)}</div>
         </div>
@@ -89,19 +92,33 @@ function renderSummary() {
 
   if (subtotalElement) subtotalElement.textContent = money(subtotal);
   if (deliveryElement) deliveryElement.textContent = money(deliveryFee);
-
-  // show dash when 0 like your UI
   if (inspectionElement) inspectionElement.textContent = inspectionFee ? money(inspectionFee) : "—";
 
   const grandTotal = subtotal + deliveryFee + inspectionFee;
   if (grandElement) grandElement.textContent = money(grandTotal);
 }
 
+async function exportOrderToGoogleSheets(orderPayload) {
+  const res = await fetch(GOOGLE_SHEETS_WEBAPP_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "text/plain;charset=utf-8"
+    },
+    body: JSON.stringify(orderPayload)
+  });
+
+  const data = await res.json().catch(() => null);
+
+  if (!data || data.ok !== true) {
+    throw new Error(data?.error || "Failed to export order");
+  }
+
+  return data.orderId;
+}
+
 // ==============================
 // EVENTS
 // ==============================
-
-// Delivery fee from state select
 if (stateSelect) {
   stateSelect.addEventListener("change", () => {
     const opt = stateSelect.options[stateSelect.selectedIndex];
@@ -110,7 +127,6 @@ if (stateSelect) {
   });
 }
 
-// Inspection yes/no radios
 document.querySelectorAll('input[name="inspection"]').forEach((radio) => {
   radio.addEventListener("change", () => {
     inspectionFee = (getInspectionChoice() === "yes") ? INSPECTION_FEE_AMOUNT : 0;
@@ -119,9 +135,9 @@ document.querySelectorAll('input[name="inspection"]').forEach((radio) => {
 });
 
 // ==============================
-// WHATSAPP SEND
+// WHATSAPP SEND + GOOGLE SHEETS
 // ==============================
-function sendToWhatsApp() {
+async function sendToWhatsApp() {
   const name = document.getElementById("fullName")?.value.trim() || "";
   const phone = document.getElementById("phone")?.value.trim() || "";
   const address = document.getElementById("address")?.value.trim() || "";
@@ -141,34 +157,72 @@ function sendToWhatsApp() {
   const subtotal = calcSubtotal();
   const grandTotal = subtotal + deliveryFee + inspectionFee;
 
-  // WhatsApp message (clean + readable)
-  let msg = `Hello Leemtech, I want to place an order.%0A%0A`;
+  const payload = {
+    secret: GOOGLE_SECRET,
+    name,
+    phone,
+    address,
+    state,
+    inspection: inspectionChoice,
+    deliveryFee,
+    inspectionFee,
+    subtotal,
+    grandTotal,
+    items: cart.map((item) => ({
+      id: item.id || "",
+      name: item.name,
+      size: item.size,
+      price: item.price,
+      quantity: item.quantity,
+      total: item.price * item.quantity
+    }))
+  };
 
-  msg += `Customer Details:%0A`;
-  msg += `Name: ${name}%0A`;
-  msg += `Phone: ${phone}%0A`;
-  msg += `Delivery Address: ${address}%0A`;
-  msg += `State: ${state}%0A`;
-  msg += `Site Inspection: ${inspectionChoice.toUpperCase()}%0A%0A`;
+  let orderId = "";
 
-  msg += `Order Items:%0A`;
+  try {
+    orderId = await exportOrderToGoogleSheets(payload);
+    showToast(`Order saved successfully (${orderId})`);
+  } catch (error) {
+    console.error(error);
+    showToast("Could not save order to Google Sheets, but WhatsApp will still open.");
+  }
+
+  let message = `Hello Leemtech, I want to place an order.\n\n`;
+
+  if (orderId) {
+    message += `Order ID: ${orderId}\n\n`;
+  }
+
+  message += `Customer Details:\n`;
+  message += `Name: ${name}\n`;
+  message += `Phone: ${phone}\n`;
+  message += `Delivery Address: ${address}\n`;
+  message += `State: ${state}\n`;
+  message += `Site Inspection: ${inspectionChoice.toUpperCase()}\n\n`;
+
+  message += `Order Items:\n`;
   cart.forEach((item, i) => {
-    msg += `${i + 1}. ${item.name}%0A`;
-    msg += `   Size: ${item.size}%0A`;
-    msg += `   Qty: ${item.quantity}%0A`;
-    msg += `   Unit Price: ₦${item.price.toLocaleString()}%0A`;
-    msg += `   Total: ₦${(item.price * item.quantity).toLocaleString()}%0A%0A`;
+    message += `${i + 1}. ${item.name}\n`;
+    message += `   Size: ${item.size}\n`;
+    message += `   Qty: ${item.quantity}\n`;
+    message += `   Unit Price: ₦${Number(item.price).toLocaleString()}\n`;
+    message += `   Total: ₦${(Number(item.price) * Number(item.quantity)).toLocaleString()}\n\n`;
   });
 
-  msg += `Summary:%0A`;
-  msg += `Subtotal: ₦${subtotal.toLocaleString()}%0A`;
-  msg += `Delivery Fee: ₦${deliveryFee.toLocaleString()}%0A`;
-  msg += `Inspection Fee: ${inspectionFee ? ("₦" + inspectionFee.toLocaleString()) : "—"}%0A`;
-  msg += `Grand Total: ₦${grandTotal.toLocaleString()}%0A%0A`;
-  msg += `Thank you.`;
+  message += `Summary:\n`;
+  message += `Subtotal: ₦${subtotal.toLocaleString()}\n`;
+  message += `Delivery Fee: ₦${deliveryFee.toLocaleString()}\n`;
+  message += `Inspection Fee: ${inspectionFee ? "₦" + inspectionFee.toLocaleString() : "—"}\n`;
+  message += `Grand Total: ₦${grandTotal.toLocaleString()}\n\n`;
+  message += `Thank you.`;
 
-  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${msg}`;
+  const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
   window.open(url, "_blank");
+
+  // OPTIONAL: clear cart after opening WhatsApp
+  // localStorage.removeItem("cart");
+  // renderSummary();
 }
 
 // Button
