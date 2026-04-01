@@ -51,5 +51,25 @@ const PRODUCTS = {
         },
         featured: false,
     },
+         wall_decor: {
+        name: "Wall Decoration",
+        category: "Cornice",
+        description: "High density ceiling and wall sheet for interior finishing and insulation.",
+        image: "image/wall decoration.jpeg",
+        sizes: {
+            "price": 3800,
+        },
+        featured: false,
+    },
+             polystyrene_ceiling: {
+        name: "Polystyrene Pop Ceiling",
+        category: "Polystyrene Pop",
+        description: "High density ceiling and wall sheet for interior finishing and insulation.",
+        image: "image/home_bg.jpg",
+        sizes: {
+            "price": 8700,
+        },
+        featured: false,
+    },
 };
 const productsArray = Object.values(PRODUCTS);
