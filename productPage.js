@@ -88,31 +88,32 @@ addBtn.addEventListener("click", () => {
 
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
-    // check if same product already exists
     const existing = cart.find(item =>
         item.id === cartItem.id && item.size === cartItem.size
     );
 
-    if(existing){
+    if (existing) {
         existing.quantity += qty;
-    }else{
+    } else {
         cart.push(cartItem);
     }
 
     localStorage.setItem("cart", JSON.stringify(cart));
 
     updateCartBadge();
-showToast(`${product.name} added to cart!`);
+    showToast(`${product.name} added to cart`);
 });
+
 function showToast(message) {
     const toast = document.getElementById("cart-toast");
     const text = document.getElementById("toast-message");
 
-    text.textContent = message;
+    if (!toast || !text) return;
 
+    text.textContent = message;
     toast.classList.add("show");
 
     setTimeout(() => {
         toast.classList.remove("show");
-    }, 3000);
+    }, 2500);
 }

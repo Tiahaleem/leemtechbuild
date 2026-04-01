@@ -6,7 +6,6 @@ function renderProducts(data = PRODUCTS, options = {}) {
 
     grid.innerHTML = "";
 
-    // Convert to array safely
     const productArray = Array.isArray(data)
         ? data
         : Object.entries(data);
@@ -15,12 +14,9 @@ function renderProducts(data = PRODUCTS, options = {}) {
 
         let id, product;
 
-        // If coming from PRODUCTS object
         if (!Array.isArray(data)) {
             [id, product] = item;
-        } 
-        // If coming from filtered array
-        else {
+        } else {
             product = item;
             id = Object.keys(PRODUCTS).find(
                 key => PRODUCTS[key] === product
@@ -55,10 +51,9 @@ function renderProducts(data = PRODUCTS, options = {}) {
 
                 <div class="price_cart_flex">
                     <div class="price">
-                        <span class="current">₦${firstPrice.toLocaleString()}</span>
+                        <span class="current">₦${Number(firstPrice).toLocaleString()}</span>
                     </div>
 
-                    <p class="size">Sizes: ${sizeList}</p>
                 </div>
             </div>
         `;
@@ -66,6 +61,4 @@ function renderProducts(data = PRODUCTS, options = {}) {
         grid.appendChild(card);
     });
 }
-// document.addEventListener("DOMContentLoaded", () => {
-//     renderProducts(productsArray);
-// });
+                    // <p class="size">Sizes: ${sizeList}</p>

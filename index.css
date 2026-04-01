@@ -37,7 +37,7 @@
 
 .nav_icon_txt span {
     font-family: "Space Grotesk", system-ui, sans-serif;
-    font-size: 12px;
+    font-size: 16px;
     font-weight: 700;
     color: rgb(247, 247, 247);
 }
@@ -172,7 +172,7 @@
     display: flex;
     align-items: center;
     overflow: hidden;
-    background: #020617 url(image/hero-construction-BeXkIJK3.jpg) center/cover no-repeat;
+    background: #020617 url(image/home_bg.jpg) center/cover no-repeat;
 }
 .Home_display::before{
     content: "";
