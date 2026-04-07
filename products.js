@@ -51,6 +51,16 @@ const PRODUCTS = {
         },
         featured: false,
     },
+    Rss_350:{
+        name: "RS 350",
+        category: "Polystyrene Parapet",
+        description: "High density ceiling and wall sheet for interior finishing and insulation.",
+        image: "image/Rss 350.jpeg",
+        sizes: {
+            "price": 6200,
+        },
+        featured: false,
+    },
          wall_decor: {
         name: "Wall Decoration",
         category: "Cornice",
@@ -66,6 +76,16 @@ const PRODUCTS = {
         category: "Polystyrene Pop",
         description: "High density ceiling and wall sheet for interior finishing and insulation.",
         image: "image/home_bg.jpg",
+        sizes: {
+            "price": 8700,
+        },
+        featured: false,
+    },
+        Polystyrene_Sheets: {
+        name: "Polystyrene Sheets",
+        category: "Polystyrene Sheets",
+        description: "High density ceiling and wall sheet for interior finishing and insulation.",
+        image: "image/Polystyrene Sheets.jpeg",
         sizes: {
             "price": 8700,
         },

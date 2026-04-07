@@ -4,8 +4,8 @@ const GOOGLE_SECRET = "LEEMTECH_2026";
 // ==============================
 // SETTINGS
 // ==============================
-const WHATSAPP_NUMBER = "2348136828054"; // no + sign
-const INSPECTION_FEE_AMOUNT = 2000;
+const WHATSAPP_NUMBER = "2348152884853"; // no + sign
+const INSPECTION_FEE_AMOUNT = 15000;
 
 // ==============================
 // CART
@@ -32,7 +32,7 @@ let toastTimer = null;
 // ==============================
 // STATE
 // ==============================
-let deliveryFee = 0;
+// let deliveryFee = 0;
 let inspectionFee = 0;
 
 // ==============================
@@ -94,7 +94,7 @@ function renderSummary() {
   if (deliveryElement) deliveryElement.textContent = money(deliveryFee);
   if (inspectionElement) inspectionElement.textContent = inspectionFee ? money(inspectionFee) : "—";
 
-  const grandTotal = subtotal + deliveryFee + inspectionFee;
+  const grandTotal = subtotal + inspectionFee;
   if (grandElement) grandElement.textContent = money(grandTotal);
 }
 
@@ -119,13 +119,13 @@ async function exportOrderToGoogleSheets(orderPayload) {
 // ==============================
 // EVENTS
 // ==============================
-if (stateSelect) {
-  stateSelect.addEventListener("change", () => {
-    const opt = stateSelect.options[stateSelect.selectedIndex];
-    deliveryFee = Number(opt?.dataset?.fee || 0);
-    renderSummary();
-  });
-}
+// if (stateSelect) {
+//   stateSelect.addEventListener("change", () => {
+//     const opt = stateSelect.options[stateSelect.selectedIndex];
+//     deliveryFee = Number(opt?.dataset?.fee || 0);
+//     renderSummary();
+//   });
+// }
 
 document.querySelectorAll('input[name="inspection"]').forEach((radio) => {
   radio.addEventListener("change", () => {
@@ -212,7 +212,7 @@ async function sendToWhatsApp() {
 
   message += `Summary:\n`;
   message += `Subtotal: ₦${subtotal.toLocaleString()}\n`;
-  message += `Delivery Fee: ₦${deliveryFee.toLocaleString()}\n`;
+  message += `Delivery Fee: To be discussed with management\n`;
   message += `Inspection Fee: ${inspectionFee ? "₦" + inspectionFee.toLocaleString() : "—"}\n`;
   message += `Grand Total: ₦${grandTotal.toLocaleString()}\n\n`;
   message += `Thank you.`;
