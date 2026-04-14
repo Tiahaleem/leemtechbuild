@@ -1,19 +1,17 @@
 // ===== SELECT ELEMENTS =====
 const categoryInputs = document.querySelectorAll(".categoryFilter");
-const sizeInputs = document.querySelectorAll (".sizeFilter");
+const sizeInputs = document.querySelectorAll(".sizeFilter");
 const minPriceInput = document.getElementById("minPrice");
 const maxPriceInput = document.getElementById("maxPrice");
 const sortSelect = document.getElementById("sortPrice");
 const clearBtn = document.getElementById("clearFilters");
 
-
 // ===== MAIN FILTER FUNCTION =====
 function filterProducts() {
-
     let filtered = [...productsArray];
 
     // CATEGORY FILTER
-    const selectedCategories = [...document.querySelectorAll(".categoryFilter")]
+    const selectedCategories = [...categoryInputs]
         .filter(cb => cb.checked)
         .map(cb => cb.value);
 
@@ -24,7 +22,7 @@ function filterProducts() {
     }
 
     // SIZE FILTER
-    const selectedSizes = [...document.querySelectorAll(".sizeFilter")]
+    const selectedSizes = [...sizeInputs]
         .filter(cb => cb.checked)
         .map(cb => cb.value);
 
@@ -37,40 +35,56 @@ function filterProducts() {
     }
 
     // PRICE FILTER
-    const min = parseFloat(document.getElementById("minPrice").value);
-    const max = parseFloat(document.getElementById("maxPrice").value);
+    const min = parseFloat(minPriceInput.value);
+    const max = parseFloat(maxPriceInput.value);
 
     if (!isNaN(min)) {
         filtered = filtered.filter(product =>
-            Object.values(product.sizes).some(price => price >= min)
+            Object.values(product.sizes).some(price => Number(price) >= min)
         );
     }
 
     if (!isNaN(max)) {
         filtered = filtered.filter(product =>
-            Object.values(product.sizes).some(price => price <= max)
+            Object.values(product.sizes).some(price => Number(price) <= max)
         );
+    }
+
+    // SORTING
+    if (sortSelect.value === "low-high") {
+        filtered.sort((a, b) => {
+            const priceA = Math.min(...Object.values(a.sizes).map(Number));
+            const priceB = Math.min(...Object.values(b.sizes).map(Number));
+            return priceA - priceB;
+        });
+    }
+
+    if (sortSelect.value === "high-low") {
+        filtered.sort((a, b) => {
+            const priceA = Math.max(...Object.values(a.sizes).map(Number));
+            const priceB = Math.max(...Object.values(b.sizes).map(Number));
+            return priceB - priceA;
+        });
     }
 
     renderProducts(filtered);
 }
-// ===== LISTENERS =====
-categoryInputs.forEach(input =>
-    input.addEventListener("change", filterProducts)
-);
 
-sizeInputs.forEach(input =>
-    input.addEventListener("change", filterProducts)
-);
+// ===== LISTENERS =====
+categoryInputs.forEach(input => {
+    input.addEventListener("change", filterProducts);
+});
+
+sizeInputs.forEach(input => {
+    input.addEventListener("change", filterProducts);
+});
 
 minPriceInput.addEventListener("input", filterProducts);
 maxPriceInput.addEventListener("input", filterProducts);
 sortSelect.addEventListener("change", filterProducts);
 
-
 // ===== CLEAR FILTERS =====
 clearBtn.addEventListener("click", () => {
-
     categoryInputs.forEach(input => input.checked = false);
     sizeInputs.forEach(input => input.checked = false);
 
@@ -80,3 +94,6 @@ clearBtn.addEventListener("click", () => {
 
     renderProducts(productsArray);
 });
+
+// ===== INITIAL LOAD =====
+renderProducts(productsArray);
