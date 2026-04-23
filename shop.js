@@ -5,12 +5,19 @@ const minPriceInput = document.getElementById("minPrice");
 const maxPriceInput = document.getElementById("maxPrice");
 const sortSelect = document.getElementById("sortPrice");
 const clearBtn = document.getElementById("clearFilters");
+const filterForm = document.querySelector(".shop_sidebar form");
+
+// stop form refresh if filters are inside a form
+if (filterForm) {
+    filterForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+    });
+}
 
 // ===== MAIN FILTER FUNCTION =====
 function filterProducts() {
     let filtered = [...productsArray];
 
-    // CATEGORY FILTER
     const selectedCategories = [...categoryInputs]
         .filter(cb => cb.checked)
         .map(cb => cb.value);
@@ -21,7 +28,6 @@ function filterProducts() {
         );
     }
 
-    // SIZE FILTER
     const selectedSizes = [...sizeInputs]
         .filter(cb => cb.checked)
         .map(cb => cb.value);
@@ -34,7 +40,6 @@ function filterProducts() {
         );
     }
 
-    // PRICE FILTER
     const min = parseFloat(minPriceInput.value);
     const max = parseFloat(maxPriceInput.value);
 
@@ -50,7 +55,6 @@ function filterProducts() {
         );
     }
 
-    // SORTING
     if (sortSelect.value === "low-high") {
         filtered.sort((a, b) => {
             const priceA = Math.min(...Object.values(a.sizes).map(Number));
@@ -79,21 +83,25 @@ sizeInputs.forEach(input => {
     input.addEventListener("change", filterProducts);
 });
 
-minPriceInput.addEventListener("input", filterProducts);
-maxPriceInput.addEventListener("input", filterProducts);
-sortSelect.addEventListener("change", filterProducts);
+if (minPriceInput) minPriceInput.addEventListener("input", filterProducts);
+if (maxPriceInput) maxPriceInput.addEventListener("input", filterProducts);
+if (sortSelect) sortSelect.addEventListener("change", filterProducts);
 
 // ===== CLEAR FILTERS =====
-clearBtn.addEventListener("click", () => {
-    categoryInputs.forEach(input => input.checked = false);
-    sizeInputs.forEach(input => input.checked = false);
+if (clearBtn) {
+    clearBtn.addEventListener("click", (e) => {
+        e.preventDefault();
 
-    minPriceInput.value = "";
-    maxPriceInput.value = "";
-    sortSelect.value = "";
+        categoryInputs.forEach(input => input.checked = false);
+        sizeInputs.forEach(input => input.checked = false);
 
-    renderProducts(productsArray);
-});
+        if (minPriceInput) minPriceInput.value = "";
+        if (maxPriceInput) maxPriceInput.value = "";
+        if (sortSelect) sortSelect.value = "";
+
+        renderProducts(productsArray);
+    });
+}
 
 // ===== INITIAL LOAD =====
 renderProducts(productsArray);
