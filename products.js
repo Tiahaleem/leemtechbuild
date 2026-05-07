@@ -32,7 +32,7 @@ const PRODUCTS = {
         featured: true,
     },
     RST_350mm_by_300mm_step: {
-        name: "RST 350 by 300",
+        name: "RST 350",
         category: "Polystyrene Parapet",
         description: "High density ceiling and wall sheet for interior finishing and insulation.",
         image: "image/RST 350mm by 300mm step.jpeg",
@@ -87,7 +87,7 @@ const PRODUCTS = {
         description: "High density ceiling and wall sheet for interior finishing and insulation.",
         image: "image/Polystyrene Sheets.jpeg",
         sizes: {
-            "price": 8700,
+            "price": 8200,
         },
         featured: false,
     },
