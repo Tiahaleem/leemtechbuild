@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Leemtech</title>
+    <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+    <div class="admin_layout">
+
+  <aside class="sidebar">
+    <h2>Leemtech Admin</h2>
+    <p>Order Management</p>
+
+    <nav>
+      <a href="#" class="active">Orders</a>
+      <a href="index.html">Back to Website</a>
+    </nav>
+  </aside>
+
+  <main class="admin_main">
+
+    <header class="admin_header">
+      <div>
+        <h1>Orders Dashboard</h1>
+        <p>Manage customer orders from your website.</p>
+      </div>
+
+      <button id="refreshBtn">Refresh</button>
+    </header>
+
+    <section class="stats_grid">
+      <div class="stat_card">
+        <span>Total Orders</span>
+        <strong id="totalOrders">0</strong>
+      </div>
+
+      <div class="stat_card">
+        <span>Pending</span>
+        <strong id="pendingOrders">0</strong>
+      </div>
+
+      <div class="stat_card">
+        <span>Delivered</span>
+        <strong id="deliveredOrders">0</strong>
+      </div>
+
+      <div class="stat_card">
+        <span>Total Sales</span>
+        <strong id="totalSales">₦0</strong>
+      </div>
+    </section>
+
+    <section class="controls">
+      <input type="text" id="searchInput" placeholder="Search by name, phone, order ID..." />
+
+      <select id="statusFilter">
+        <option value="">All Status</option>
+        <option value="pending">Pending</option>
+        <option value="processing">Processing</option>
+        <option value="delivered">Delivered</option>
+        <option value="cancelled">Cancelled</option>
+      </select>
+    </section>
+
+    <section id="ordersContainer" class="orders_container">
+      <!-- orders show here -->
+    </section>
+
+  </main>
+
+</div>
+
+<div id="toast" class="toast"></div>
+
+<div id="deleteModal" class="modal_overlay">
+  <div class="modal_box">
+    <h3>Delete Order?</h3>
+    <p>This order will be removed from your records.</p>
+
+    <div class="modal_actions">
+      <button id="cancelDelete" class="modal_cancel">Cancel</button>
+      <button id="confirmDelete" class="modal_delete">Delete</button>
+    </div>
+  </div>
+</div>
+<script src="admin.js"></script>
+</body>
+</html>
